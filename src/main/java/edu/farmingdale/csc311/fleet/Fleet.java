@@ -50,38 +50,133 @@ public class Fleet {
      *        overwrite your slots, so copy it.
      * ------------------------------------------------------------------ */
 
+    // Step 1: Add the three fields
+    private final String name;
+    private final Vehicle[] vehicles;
+    private int count;
+
+
+    // Step 2: Constructor
     public Fleet(String name) {
-        throw new UnsupportedOperationException("TODO-08");
+
+        if (name == null || name.trim().isEmpty()) {
+            throw new IllegalArgumentException("name: " + name);
+        }
+
+        this.name = name.trim();
+        this.vehicles = new Vehicle[MAX_VEHICLES];
+        this.count = 0;
     }
+
 
     public String getName() {
-        throw new UnsupportedOperationException("TODO-08");
+        return name;
     }
 
+
+    // Step 3: contains()
     public boolean contains(Vehicle vehicle) {
-        throw new UnsupportedOperationException("TODO-08");
+
+        for (int i = 0; i < count; i++) {
+            if (vehicles[i].equals(vehicle)) {
+                return true;
+            }
+        }
+
+        return false;
     }
 
+
+    // Step 4: add()
     public boolean add(Vehicle vehicle) {
-        throw new UnsupportedOperationException("TODO-08");
+
+        if (vehicle == null) {
+            throw new IllegalArgumentException("vehicle: null");
+        }
+
+        if (contains(vehicle)) {
+            return false;
+        }
+
+        if (count == MAX_VEHICLES) {
+            return false;
+        }
+
+        vehicles[count] = vehicle;
+        count++;
+
+        return true;
     }
 
+
+    // Step 5: removeByVin()
     public boolean removeByVin(String vin) {
-        throw new UnsupportedOperationException("TODO-08");
+
+        if (vin == null || vin.trim().isEmpty()) {
+            return false;
+        }
+
+        vin = vin.trim();
+
+        for (int i = 0; i < count; i++) {
+
+            if (vehicles[i].getVin().equalsIgnoreCase(vin)) {
+
+                // Shift everything after the removed vehicle left
+                for (int j = i; j < count - 1; j++) {
+                    vehicles[j] = vehicles[j + 1];
+                }
+
+                // Remove the duplicate reference at the end
+                vehicles[count - 1] = null;
+
+                count--;
+
+                return true;
+            }
+        }
+
+        return false;
     }
 
+
+    // Step 6: findByVin()
     public Vehicle findByVin(String vin) {
-        throw new UnsupportedOperationException("TODO-08");
+
+        if (vin == null || vin.trim().isEmpty()) {
+            return null;
+        }
+
+        vin = vin.trim();
+
+        for (int i = 0; i < count; i++) {
+
+            if (vehicles[i].getVin().equalsIgnoreCase(vin)) {
+                return vehicles[i];
+            }
+        }
+
+        return null;
     }
 
+
+    // Step 7: size()
     public int size() {
-        throw new UnsupportedOperationException("TODO-08");
+        return count;
     }
 
+
+    // Step 8: toArray()
     public Vehicle[] toArray() {
-        throw new UnsupportedOperationException("TODO-08");
-    }
 
+        Vehicle[] result = new Vehicle[count];
+
+        for (int i = 0; i < count; i++) {
+            result[i] = vehicles[i];
+        }
+
+        return result;
+    }
     /* ------------------------------------------------------------------
      * TODO-09     commit: TODO-09: implement Fleet reports
      *
