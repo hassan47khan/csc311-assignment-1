@@ -30,44 +30,86 @@ public class Truck extends Vehicle {
      *    Same rules as Car: super.toString(), category(), one decimal.
      * ------------------------------------------------------------------ */
 
+    // Step 1: Add the payload field
+    private double payloadKg;
+
+
     public Truck(String vin, String make, String model, int year, String color,
-                 int wheels, double engineSize, FuelType fuelType, double fuelCapacity, double payloadKg) {
+                 int wheels, double engineSize, FuelType fuelType,
+                 double fuelCapacity, double payloadKg) {
 
-        super(vin, make, model, year, color, wheels, engineSize, fuelType, fuelCapacity);
+        // Step 2: super(...) MUST stay first
+        super(vin, make, model, year, color, wheels, engineSize,
+                fuelType, fuelCapacity);
 
-        // TODO-07 step 2: check and store payloadKg here.
+        // Check payloadKg: above 0.0 and at most 20000.0
+        if (payloadKg <= 0.0 || payloadKg > 20000.0) {
+            throw new IllegalArgumentException("payloadKg: " + payloadKg);
+        }
+
+        this.payloadKg = payloadKg;
     }
 
+
+    // Step 3: Getter
     public double getPayloadKg() {
-        throw new UnsupportedOperationException("TODO-07");
+        return payloadKg;
     }
 
+
+    // Step 3: Setter
     public void setPayloadKg(double payloadKg) {
-        throw new UnsupportedOperationException("TODO-07");
+        if (payloadKg <= 0.0 || payloadKg > 20000.0) {
+            throw new IllegalArgumentException("payloadKg: " + payloadKg);
+        }
+
+        this.payloadKg = payloadKg;
     }
 
+
+    // Step 4: Category
     @Override
     public String category() {
-        throw new UnsupportedOperationException("TODO-07");
+        return "Truck";
     }
 
+
+    // Step 4: Horn sound
     @Override
     public String hornSound() {
-        throw new UnsupportedOperationException("TODO-07");
+        return "HOOOONK!";
     }
 
+
+    // Step 4: Truck honks twice
     @Override
     public void honk() {
-        throw new UnsupportedOperationException("TODO-07");
+        honk(2);
     }
 
+
+    // Step 4: Calculate range based on payload
     @Override
     public double rangeInMiles() {
-        throw new UnsupportedOperationException("TODO-07");
+
+        double loadFactor =
+                1.0 - Math.min(0.35, payloadKg / 20000.0);
+
+        return getFuelCapacity()
+                * getFuelType().getMilesPerUnit()
+                * loadFactor;
     }
 
+
+    // Step 5: toString
     @Override
     public String toString() {
-        throw new UnsupportedOperationException("TODO-07");
+        return String.format(
+                "%s -> %s, payload=%.1f kg, range=%.1f mi",
+                category(),
+                super.toString(),
+                payloadKg,
+                rangeInMiles()
+        );
     }
-}
+
