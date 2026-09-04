@@ -206,19 +206,95 @@ public class Fleet {
      *        the type: rangeInMiles() already knows which formula to run.
      * ------------------------------------------------------------------ */
 
+    @SuppressWarnings("unused")
     public Vehicle[] sortedByYear() {
-        throw new UnsupportedOperationException("TODO-09");
+
+        // Start with a COPY so the internal array isn't changed
+        Vehicle[] result = toArray();
+
+        // Selection sort
+        for (int i = 0; i < result.length - 1; i++) {
+
+            int smallest = i;
+
+            for (int j = i + 1; j < result.length; j++) {
+
+                int yearJ = result[j].getYear();
+                int yearSmallest = result[smallest].getYear();
+
+                if (yearJ < yearSmallest) {
+                    smallest = j;
+
+                } else if (yearJ == yearSmallest &&
+                        result[j].getMake().compareToIgnoreCase(
+                                result[smallest].getMake()) < 0) {
+                    smallest = j;
+                }
+            }
+
+            // Swap
+            Vehicle temp = result[i];
+            result[i] = result[smallest];
+            result[smallest] = temp;
+        }
+
+        return result;
     }
 
+
+    // Step 2: countWithFuelType()
     public int countWithFuelType(FuelType fuel) {
-        throw new UnsupportedOperationException("TODO-09");
+
+        int total = 0;
+
+        for (int i = 0; i < count; i++) {
+
+            if (vehicles[i].getFuelType() == fuel) {
+                total++;
+            }
+        }
+
+        return total;
     }
 
+
+    // Step 3: averageEngineSize()
     public double averageEngineSize() {
-        throw new UnsupportedOperationException("TODO-09");
+
+        double total = 0.0;
+        int engineCount = 0;
+
+        for (int i = 0; i < count; i++) {
+
+            if (vehicles[i].getFuelType().hasEngine()) {
+                total += vehicles[i].getEngineSize();
+                engineCount++;
+            }
+        }
+
+        if (engineCount == 0) {
+            return 0.0;
+        }
+
+        return total / engineCount;
     }
 
+
+    // Step 4: longestRange()
     public Vehicle longestRange() {
-        throw new UnsupportedOperationException("TODO-09");
+
+        if (count == 0) {
+            return null;
+        }
+
+        Vehicle longest = vehicles[0];
+
+        for (int i = 1; i < count; i++) {
+
+            if (vehicles[i].rangeInMiles() > longest.rangeInMiles()) {
+                longest = vehicles[i];
+            }
+        }
+
+        return longest;
     }
-}
