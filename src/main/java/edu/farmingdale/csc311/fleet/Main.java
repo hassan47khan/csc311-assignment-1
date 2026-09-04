@@ -52,6 +52,233 @@ public class Main {
      * ------------------------------------------------------------------ */
 
     public static void main(String[] args) {
-        System.out.println("TODO-10: build the fleet demo. See the handout for the expected output.");
+
+        Fleet fleet = buildFleet();
+
+        printInventory(fleet);
+        soundCheck(fleet);
+        printReport(fleet);
+        guardRails(fleet);
     }
-}
+
+
+    // ================================================================
+    // Section 1: Build the Fleet
+    // ================================================================
+
+    private static Fleet buildFleet() {
+
+        Fleet fleet = new Fleet("Farmingdale Motor Pool");
+
+        fleet.add(new Car(
+                "1HGCM82633A004352",
+                "Honda",
+                "Accord",
+                2023,
+                "Blue",
+                4,
+                2.0,
+                FuelType.GASOLINE,
+                15.8,
+                4
+        ));
+
+        fleet.add(new Car(
+                "5YJ3E1EA7PF123456",
+                "Tesla",
+                "Model 3",
+                2024,
+                "Red",
+                4,
+                0.0,
+                FuelType.ELECTRIC,
+                75.0,
+                4
+        ));
+
+        fleet.add(new Car(
+                "JTDKARFU2J3061234",
+                "Toyota",
+                "Prius",
+                2020,
+                "Silver",
+                4,
+                1.8,
+                FuelType.HYBRID,
+                11.3,
+                5
+        ));
+
+        fleet.add(new Truck(
+                "1FT8W3BT5MEC12345",
+                "Ford",
+                "F-350",
+                2021,
+                "White",
+                6,
+                6.7,
+                FuelType.DIESEL,
+                40.0,
+                3500.0
+        ));
+
+        fleet.add(new Truck(
+                "3C6UR5DL9JG123456",
+                "Ram",
+                "2500",
+                2019,
+                "Black",
+                4,
+                6.4,
+                FuelType.GASOLINE,
+                31.0,
+                1800.0
+        ));
+
+        return fleet;
+    }
+
+
+    // ================================================================
+    // Section 2: Inventory
+    // ================================================================
+
+    private static void printInventory(Fleet fleet) {
+
+        for (Vehicle vehicle : fleet.sortedByYear()) {
+            System.out.println(vehicle);
+        }
+    }
+
+
+    // ================================================================
+    // Section 3: Sound Check
+    // ================================================================
+
+    private static void soundCheck(Fleet fleet) {
+
+        for (Honkable vehicle : fleet.sortedByYear()) {
+            vehicle.honk();
+        }
+
+        Vehicle accord = fleet.findByVin("1HGCM82633A004352");
+
+        accord.honk(3);
+    }
+
+
+    // ================================================================
+    // Section 4: Report
+    // ================================================================
+
+    private static void printReport(Fleet fleet) {
+
+        System.out.printf(
+                "%-20s: %d%n",
+                "Vehicle count",
+                fleet.size()
+        );
+
+        System.out.printf(
+                "%-20s: %.1f L%n",
+                "Average engine size",
+                fleet.averageEngineSize()
+        );
+
+        Vehicle longest = fleet.longestRange();
+
+        System.out.printf(
+                "%-20s: %d %s %s (%.1f mi)%n",
+                "Longest range",
+                longest.getYear(),
+                longest.getMake(),
+                longest.getModel(),
+                longest.rangeInMiles()
+        );
+
+        for (FuelType fuel : FuelType.values()) {
+
+            System.out.printf(
+                    "  %-9s: %d%n",
+                    fuel.getLabel(),
+                    fleet.countWithFuelType(fuel)
+            );
+        }
+    }
+
+
+    // ================================================================
+    // Section 5: Guard Rails
+    // ================================================================
+
+    private static void guardRails(Fleet fleet) {
+
+        // a. Try adding the Accord a second time
+        Vehicle accord = fleet.findByVin("1HGCM82633A004352");
+
+        System.out.printf(
+                "%-23s: %s%n",
+                "Duplicate add",
+                fleet.add(accord)
+        );
+
+
+        // b. Remove the Prius
+        System.out.printf(
+                "%-23s: %s%n",
+                "Remove Prius",
+                fleet.removeByVin("JTDKARFU2J3061234")
+        );
+
+
+        // c. Print size afterwards
+        System.out.printf(
+                "%-23s: %s%n",
+                "Size after removal",
+                fleet.size()
+        );
+
+
+        // d. Electric vehicle with an engine
+        try {
+
+            new Car(
+                    "AAAAAAAAAAAAAAAAA",
+                    "Test",
+                    "Electric",
+                    2024,
+                    "Black",
+                    4,
+                    2.0,
+                    FuelType.ELECTRIC,
+                    75.0,
+                    4
+            );
+
+        } catch (IllegalArgumentException e) {
+
+            System.out.println("Caught: " + e.getMessage());
+        }
+
+
+        // e. Invalid FuelType label
+        try {
+
+            FuelType.fromLabel("Steam");
+
+        } catch (IllegalArgumentException e) {
+
+            System.out.println("Caught: " + e.getMessage());
+        }
+
+
+        // f. Invalid honk count
+        try {
+
+            fleet.findByVin("1HGCM82633A004352").honk(0);
+
+        } catch (IllegalArgumentException e) {
+
+            System.out.println("Caught: " + e.getMessage());
+        }
+    }
