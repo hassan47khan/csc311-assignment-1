@@ -62,6 +62,7 @@ public class Car extends Vehicle {
     }
 
 
+
     // Step 4: Category
     @Override
     public String category() {
@@ -92,5 +93,6 @@ public class Car extends Vehicle {
                 super.toString(),
                 doors,
                 rangeInMiles()
-        );
+                );
     }
+}

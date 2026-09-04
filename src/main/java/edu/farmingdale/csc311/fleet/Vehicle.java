@@ -198,6 +198,9 @@ public abstract class Vehicle implements Honkable {
             System.out.println(hornSound());
         }
     }
+    public abstract String category();
+
+    public abstract double rangeInMiles();
     /* ------------------------------------------------------------------
      * TODO-05     commit: TODO-05: add toString, equals and hashCode
      *

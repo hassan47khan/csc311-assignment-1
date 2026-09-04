@@ -4,7 +4,7 @@ package edu.farmingdale.csc311.fleet;
  * A work truck. Its range drops as its payload rating goes up, so it
  * computes range differently from a Car.
  *
- * @author YOUR NAME HERE
+ * @author Hassan Khan
  */
 public class Truck extends Vehicle {
 
@@ -112,4 +112,4 @@ public class Truck extends Vehicle {
                 rangeInMiles()
         );
     }
-
+}

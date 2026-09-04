@@ -4,7 +4,7 @@ package edu.farmingdale.csc311.fleet;
  * A named group of vehicles stored in a plain array.
  * No ArrayList, no HashMap. Arrays and loops only.
  *
- * @author YOUR NAME HERE
+ * @author Hassan Khan
  */
 public class Fleet {
 
@@ -298,3 +298,4 @@ public class Fleet {
 
         return longest;
     }
+}

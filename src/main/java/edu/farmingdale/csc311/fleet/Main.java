@@ -3,7 +3,7 @@ package edu.farmingdale.csc311.fleet;
 /**
  * Driver. This is the only class that prints a report.
  *
- * @author YOUR NAME HERE
+ * @author Hassan Khan
  */
 public class Main {
 
@@ -282,3 +282,4 @@ public class Main {
             System.out.println("Caught: " + e.getMessage());
         }
     }
+}
